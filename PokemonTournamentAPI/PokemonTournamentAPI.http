@@ -1,0 +1,6 @@
+@PokemonTournamentAPI_HostAddress = http://localhost:5065
+
+GET {{PokemonTournamentAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
