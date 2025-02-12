@@ -1,8 +1,10 @@
-Microsoft Visual Studio Solution File, Format Version 12.00
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.2.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokemonTournamentAPI", "PokemonTournamentAPI\PokemonTournamentAPI.csproj", "{D17AC69E-055C-BC68-4E7B-3F51635D7693}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokemonTournamentAPI.Tests", "PokemonTournamentAPI.Tests\PokemonTournamentAPI.Tests.csproj", "{E95D5BA5-24F7-4D0A-9D7F-C9BBCF90A1CF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -14,6 +16,10 @@ Global
 		{D17AC69E-055C-BC68-4E7B-3F51635D7693}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D17AC69E-055C-BC68-4E7B-3F51635D7693}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D17AC69E-055C-BC68-4E7B-3F51635D7693}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E95D5BA5-24F7-4D0A-9D7F-C9BBCF90A1CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E95D5BA5-24F7-4D0A-9D7F-C9BBCF90A1CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E95D5BA5-24F7-4D0A-9D7F-C9BBCF90A1CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E95D5BA5-24F7-4D0A-9D7F-C9BBCF90A1CF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
