@@ -16,3 +16,7 @@ This is a repo setup for the Zum Rails interview
     ```text
         http://localhost:5065/swagger/index.html
     ```
+
+    '''bash
+        curl http://localhost:5065/pokemon/tournament/statistics
+    ```

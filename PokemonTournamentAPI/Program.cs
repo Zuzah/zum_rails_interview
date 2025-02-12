@@ -10,9 +10,13 @@ builder.Services.AddCors(options =>
                         .AllowAnyMethod());
 });
 
+// Register services
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Register HttpClient so it can be injected into controllers
+builder.Services.AddHttpClient();
 
 var app = builder.Build();
 
@@ -21,7 +25,7 @@ app.UseCors("AllowAngularDev");
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-       app.UseSwaggerUI(options =>
+    app.UseSwaggerUI(options =>
     {
         // The Swagger endpoint path is relative to the root.
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "Pokemon Tournament API V1");
@@ -29,9 +33,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
