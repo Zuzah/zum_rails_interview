@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using PokemonTournamentApi.Models;
+using PokemonTournamentApi.Services;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -42,18 +43,37 @@ namespace PokemonTournamentApi.Controllers
                 try
                 {
                     var json = await _httpClient.GetStringAsync($"https://pokeapi.co/api/v2/pokemon/{id}");
-                    var poke = JsonSerializer.Deserialize<PokemonData>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                    if (poke != null)
+                    
+                    // Use JsonDocument to parse the JSON response.
+                    using var document = JsonDocument.Parse(json);
+                    var root = document.RootElement;
+
+                    // Extract the ID, Name, Type:
+                    int pokeId = root.GetProperty("id").GetInt32();
+                    string pokeName = root.GetProperty("name").GetString() ?? "";
+                    string type = "";
+
+                    if (root.TryGetProperty("types", out JsonElement typesElement) &&
+                        typesElement.ValueKind == JsonValueKind.Array &&
+                        typesElement.GetArrayLength() > 0)
                     {
-                        tournamentList.Add(new PokemonData
+                        // Get the first type element.
+                        var firstTypeObj = typesElement[0];
+                        if (firstTypeObj.TryGetProperty("type", out JsonElement typeObj))
                         {
-                            Id = poke.Id,
-                            Name = poke.Name,
-                            Wins = 0,
-                            Losses = 0,
-                            Ties = 0
-                        });
+                            type = typeObj.GetProperty("name").GetString() ?? "";
+                        }
                     }
+
+                    tournamentList.Add(new PokemonData
+                    {
+                        Id = pokeId,
+                        Name = pokeName,
+                        Type = type,
+                        Wins = 0,
+                        Losses = 0,
+                        Ties = 0
+                    });
                 }
                 catch (Exception e)
                 {
@@ -63,8 +83,11 @@ namespace PokemonTournamentApi.Controllers
 
             if (tournamentList.Count < 8)
             {
-                return StatusCode(500, "Error fetching  Pokemon data from endpoint.");
+                return StatusCode(500, "Error fetching Pokemon data from endpoint.");
             }
+
+            // Simulate the tournament battles based on type advantages.
+            TournamentSimulator.SimulateBattles(tournamentList);
 
             return Ok(tournamentList);
         }
