@@ -14,13 +14,12 @@ This is a repo setup for the Zum Rails interview
 2. Access the backend services via the following ways:
 
     ```bash
-        http://localhost:5065/swagger/index.html
+    http://localhost:5065/swagger/index.html
     ```
 
 
     ```bash
-    
-        curl http://localhost:5065/pokemon/tournament/statistics
+    curl http://localhost:5065/pokemon/tournament/statistics
     ```
 
 ## Running Unit Tests
