@@ -13,14 +13,17 @@ namespace PokemonTournamentApi.Services
 
     public static class TournamentSimulator
     {
-        // Define type advantages: key beats value.
+        // The key beats the value.
         private static readonly Dictionary<string, string> TypeAdvantages = new(StringComparer.OrdinalIgnoreCase)
         {
-            { "grass", "water" },
             { "water", "fire" },
-            { "fire", "grass" }
-
-            // TODO: ADD more as needed, check Bulbapedia for details
+            { "fire", "grass" },
+            { "grass", "electric" },
+            { "electric", "water" },
+            { "ghost", "psychic" },
+            { "psychic", "fighting" },
+            { "fighting", "dark" },
+            { "dark", "ghost" }
         };
 
         // Returns true if the attacking Pokemon has a type advantage over the other.
@@ -30,7 +33,8 @@ namespace PokemonTournamentApi.Services
                    string.Equals(targetType, defenderType, StringComparison.OrdinalIgnoreCase);
         }
 
-        /// Determines the outcome of a battle between two Pokémon based on their types.
+        // Determines the outcome of a battle between two Pokémon based on their types.
+        // Uses base_experience as alternative
         public static BattleResult DetermineBattleOutcome(PokemonData p1, PokemonData p2)
         {
             bool p1CanBeat = CanBeat(p1.Type, p2.Type);
@@ -46,11 +50,17 @@ namespace PokemonTournamentApi.Services
             }
             else
             {
-                return BattleResult.Tie;
+                // Fall back to comparing base_experience.
+                if (p1.BaseExperience > p2.BaseExperience)
+                    return BattleResult.P1Wins;
+                else if (p2.BaseExperience > p1.BaseExperience)
+                    return BattleResult.P2Wins;
+                else
+                    return BattleResult.Tie;
             }
         }
 
-        /// Simulates a round-robin tournament: each Pokémon battles every other exactly ONCE.
+        // Simulates a round-robin tournament: each Pokémon battles every other exactly ONCE.
         public static void SimulateBattles(List<PokemonData> pokemons)
         {
             // Reset all scores.
@@ -69,7 +79,8 @@ namespace PokemonTournamentApi.Services
                     BattleResult result = DetermineBattleOutcome(pokemons[i], pokemons[j]);
 
                     // Output the matches
-                    Console.WriteLine($"Match Result: {pokemons[i].Name} ({pokemons[i].Type}) vs {pokemons[j].Name} ({pokemons[j].Type}): {result}");
+                    Console.WriteLine($"{pokemons[i].Name} ({pokemons[i].Type}, Exp:{pokemons[i].BaseExperience}) " +
+                                      $"vs {pokemons[j].Name} ({pokemons[j].Type}, Exp:{pokemons[j].BaseExperience}): {result}");
 
                     switch (result)
                     {

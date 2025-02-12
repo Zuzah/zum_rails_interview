@@ -31,8 +31,8 @@ namespace PokemonTournamentApi.Controllers
             // Keep adding a random pokemon until 8 are chosen
             while (chosenPokemonIds.Count < 8)
             {
-                int id = _random.Next(1, 151); // Pick between 1, 151
-                chosenPokemonIds.Add(id); // Pokemon will be unique since Hash
+                int id = _random.Next(1, 151);
+                chosenPokemonIds.Add(id);
             }
 
             var tournamentList = new List<PokemonData>();
@@ -43,19 +43,20 @@ namespace PokemonTournamentApi.Controllers
                 try
                 {
                     var json = await _httpClient.GetStringAsync($"https://pokeapi.co/api/v2/pokemon/{id}");
-                    
+
                     // Use JsonDocument to parse the JSON response.
                     using var document = JsonDocument.Parse(json);
                     var root = document.RootElement;
 
-                    // Extract the ID, Name, Type:
+                    // Extract id, name, and base_experience:
                     int pokeId = root.GetProperty("id").GetInt32();
                     string pokeName = root.GetProperty("name").GetString() ?? "";
-                    string type = "";
+                    int baseExperience = root.GetProperty("base_experience").GetInt32();
 
+                    // Extract type from the first element of the "types" array (using slot 1).
+                    string type = "";
                     if (root.TryGetProperty("types", out JsonElement typesElement) &&
-                        typesElement.ValueKind == JsonValueKind.Array &&
-                        typesElement.GetArrayLength() > 0)
+                        typesElement.ValueKind == JsonValueKind.Array && typesElement.GetArrayLength() > 0)
                     {
                         // Get the first type element.
                         var firstTypeObj = typesElement[0];
@@ -70,6 +71,7 @@ namespace PokemonTournamentApi.Controllers
                         Id = pokeId,
                         Name = pokeName,
                         Type = type,
+                        BaseExperience = baseExperience,
                         Wins = 0,
                         Losses = 0,
                         Ties = 0
