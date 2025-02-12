@@ -1,7 +1,7 @@
 # zum_rails_interview
 This is a repo setup for the Zum Rails interview
 
-# How to build an Run
+# How to build an Execute
 
 1. Perform the following command(s):
 
@@ -9,18 +9,42 @@ This is a repo setup for the Zum Rails interview
     dotnet build
     dotnet run
     ```
-    
 
-2. Access the backend services via the following ways:
+# How to Access and Use the API   
 
+Access the backend services via the following ways: Curl or Swagger
+
+## Access via Curl
+
+1. Valid Request: Get 200:
     ```bash
-    http://localhost:5065/swagger/index.html
+    curl "http://localhost:5065/pokemon/tournament/statistics?sortBy=wins&sortDirection=asc"
     ```
 
+2. Missing sortBy: Get error 400:
 
     ```bash
     curl http://localhost:5065/pokemon/tournament/statistics
     ```
+
+3. Invalid sortBy: Get error 400
+
+    ```bash
+    curl "http://localhost:5065/pokemon/tournament/statistics?sortBy=invalid"
+    ```
+
+4. Invalid sortDirection: Get error 400
+    ```bash
+    curl "http://localhost:5065/pokemon/tournament/statistics?sortBy=wins&sortDirection=up"
+    ```
+
+## Access via Swagger
+
+http://localhost:5065/swagger/index.html
+
+See the above curl command to replicate tests
+
+![Optional Alt Text](assets/pokemon-swagger-cap.png)
 
 ## Running Unit Tests
 
