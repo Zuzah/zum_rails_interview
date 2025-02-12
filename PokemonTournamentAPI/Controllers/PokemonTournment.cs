@@ -6,6 +6,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PokemonTournamentApi.Controllers
 {
@@ -23,8 +24,30 @@ namespace PokemonTournamentApi.Controllers
         }
 
         [HttpGet("statistics")]
-        public async Task<IActionResult> GetTournamentStatistics()
+        public async Task<IActionResult> GetTournamentStatistics(
+            [FromQuery] string sortBy,
+            [FromQuery] string sortDirection = "desc")
         {
+            // Validate query parameters as per Zum Rails attachment
+            if (string.IsNullOrWhiteSpace(sortBy))
+            {
+                return BadRequest("sortBy parameter is required");
+            }
+
+            var allowedSortBy = new[] { "wins", "losses", "ties", "name", "id" };
+
+            if (!allowedSortBy.Contains(sortBy.ToLower()))
+            {
+                return BadRequest("sortBy parameter is invalid");
+            }
+
+            var allowedSortDirections = new[] { "asc", "desc" };
+
+            if (!allowedSortDirections.Contains(sortDirection.ToLower()))
+            {
+                return BadRequest("sortDirection parameter is invalid");
+            }
+
             // First randomly select 8 unique Pokémon IDs (from #1 to #1151 where #1 is Bulbasaur)
             var chosenPokemonIds = new HashSet<int>();
 
@@ -90,6 +113,51 @@ namespace PokemonTournamentApi.Controllers
 
             // Simulate the tournament battles based on type advantages.
             TournamentSimulator.SimulateBattles(tournamentList);
+
+            // Sort the tournament list based on query parameters.
+            if (sortDirection.Equals("asc", StringComparison.OrdinalIgnoreCase))
+            {
+                switch (sortBy.ToLower())
+                {
+                    case "wins":
+                        tournamentList = tournamentList.OrderBy(p => p.Wins).ToList();
+                        break;
+                    case "losses":
+                        tournamentList = tournamentList.OrderBy(p => p.Losses).ToList();
+                        break;
+                    case "ties":
+                        tournamentList = tournamentList.OrderBy(p => p.Ties).ToList();
+                        break;
+                    case "name":
+                        tournamentList = tournamentList.OrderBy(p => p.Name).ToList();
+                        break;
+                    case "id":
+                        tournamentList = tournamentList.OrderBy(p => p.Id).ToList();
+                        break;
+                }
+            }
+            // else descending
+            else
+            {
+                switch (sortBy.ToLower())
+                {
+                    case "wins":
+                        tournamentList = tournamentList.OrderByDescending(p => p.Wins).ToList();
+                        break;
+                    case "losses":
+                        tournamentList = tournamentList.OrderByDescending(p => p.Losses).ToList();
+                        break;
+                    case "ties":
+                        tournamentList = tournamentList.OrderByDescending(p => p.Ties).ToList();
+                        break;
+                    case "name":
+                        tournamentList = tournamentList.OrderByDescending(p => p.Name).ToList();
+                        break;
+                    case "id":
+                        tournamentList = tournamentList.OrderByDescending(p => p.Id).ToList();
+                        break;
+                }
+            }
 
             return Ok(tournamentList);
         }
