@@ -1,26 +1,25 @@
-namespace PokemonTournamentApi.Models {
-    
-    public class PokemonData {
-        
-        //Define as unique identifier
-        public int Id {get; set;}
-        public string Name {get; set; }
-        public string Type {get; set; }
-        public int Wins {get; set; }
+namespace PokemonTournamentApi.Models
+{
+    public class PokemonData
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Type { get; set; }
+        public int BaseExperience { get; set; }
 
-        public int Losses {get; set; }
-
-        public int Ties {get; set; }
+        public int Wins { get; set; }
+        public int Losses { get; set; }
+        public int Ties { get; set; }
 
         // Constructor
-        public PokemonData() {
-
-            // init as needed
+        public PokemonData()
+        {
             Type = string.Empty;
             Name = string.Empty;
+            BaseExperience = 0;
             Wins = 0;
-            Losses = 0; 
+            Losses = 0;
+            Ties = 0;
         }
-
     }
 }
