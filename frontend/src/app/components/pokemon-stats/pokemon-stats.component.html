@@ -1,0 +1,44 @@
+<div class="header">
+  <h2>Pokémon Tournament Statistics</h2>
+  <div class="controls">
+    <label for="sortBy">Sort By:</label>
+    <select id="sortBy" [(ngModel)]="sortBy">
+      <option value="wins">Wins</option>
+      <option value="losses">Losses</option>
+      <option value="ties">Ties</option>
+      <option value="name">Name</option>
+      <option value="id">ID</option>
+    </select>
+
+    <label for="sortDirection">Sort Direction:</label>
+    <select id="sortDirection" [(ngModel)]="sortDirection">
+      <option value="asc">Ascending</option>
+      <option value="desc">Descending</option>
+    </select>
+
+    <button (click)="fetchPokemon()">Fetch Pokémon</button>
+  </div>
+</div>
+
+<table class="pokemon-table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Wins</th>
+      <th>Losses</th>
+      <th>Ties</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let pokemon of pokemons">
+      <td>{{ pokemon.id }}</td>
+      <td>{{ pokemon.name }}</td>
+      <td>{{ pokemon.type }}</td>
+      <td>{{ pokemon.wins }}</td>
+      <td>{{ pokemon.losses }}</td>
+      <td>{{ pokemon.ties }}</td>
+    </tr>
+  </tbody>
+</table>
