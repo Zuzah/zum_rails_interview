@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace PokemonTournamentApi.Models
 {
     public class PokemonData
@@ -5,11 +7,11 @@ namespace PokemonTournamentApi.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public string Type { get; set; }
-        public int BaseExperience { get; set; }
-
         public int Wins { get; set; }
         public int Losses { get; set; }
         public int Ties { get; set; }
+        [JsonIgnore]
+        public int BaseExperience { get; set; }
 
         // Constructor
         public PokemonData()

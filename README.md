@@ -3,13 +3,18 @@ This is a repo setup for the Zum Rails interview
 
 # How to build an Execute
 
-1. Perform the following command(s):
+1. Backend: Perform the following command(s) on terminal:
 
     ```bash
     dotnet build
     dotnet run
     ```
+2. Frontend: Perform the following command on another terminal:
 
+    ```bash
+    ng build
+    ng serve
+    ```
 # How to Access and Use the API   
 
 Access the backend services via the following ways: Curl or Swagger
@@ -37,6 +42,12 @@ Access the backend services via the following ways: Curl or Swagger
     ```bash
     curl "http://localhost:5065/pokemon/tournament/statistics?sortBy=wins&sortDirection=up"
     ```
+
+## Access via Angular
+
+http://localhost:4200/
+
+![Optional Alt Text](/assets/angular-pokemon-cap.png)
 
 ## Access via Swagger
 
